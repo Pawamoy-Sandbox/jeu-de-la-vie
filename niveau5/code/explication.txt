@@ -1,0 +1,35 @@
+Compilation :
+	- préciser au compilateur l'emplacement des headers
+	- préciser les bibliothèques à l'édition de liens
+	solution : -I /usr/include/cairo/ -I /usr/include/X11/ pour les .h
+		   -lcairo -lX11 pour l'édition de liens (avec -L /usr/lib
+		   au cas où les libs ne sont pas trouvées directement)
+	trouvée : sur la page "getting started" de la doc cairo
+		  dans la doc de gcc sur internet (option -I)
+		  dans le polycopié fournit en cours sur les bibliothèques
+	- quelques difficultés avant de comprendre que tapper make MODE=TEXTE
+	définissait une variable MODE dans le makefile, égale à TEXTE
+	à partir de là, facile !
+
+
+Programmation :
+	- récupérer les valeurs des clics souris
+	valeurs trouvées sur internet (un des premiers sujets)
+	en tappant XNextEvent left/right click
+	- récupérer les appuis clavier
+	idée : utilisation de XKeycodeToKeysim
+	problème : warning "deprecated" par le compilateur
+	solution trouvée sur internet en tappant le warning :
+	http://code.google.com/p/chromium/issues/detail?id=117210
+	utilisation de XkbKeycodeToKeysim (définie dans X11/XKBlib.h)
+	nouveau problème : aucun effet lors d'appuis clavier, prb venant des case du switch
+	solution : utilisation de XKeysymToString prenant un KeySym en arg
+	(trouvée dans l'en-tete de X11/keysymdef.h)
+	-> switch sur la première lettre de la chaine obtenue
+	- afficher les variables de temps et de période
+	solution trouvée sur la doc de cairo : on peut passer un tableau de caractères
+	à cairo_show_text, il suffit donc de faire un sprintf(chaine, "%d", variable);
+	puis cairo_show_text(cr, chaine);
+
+Aide supplémentaire trouvée sur :
+http://tronche.com/gui/x/xlib/utilities/
